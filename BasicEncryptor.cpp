@@ -1,5 +1,7 @@
 #include "BasicEncryptor.h"
 
+
+
 // CAUTION : USING THIS PROGRAM IS AT YOUR OWN RISK! PLEASE DON'T USE WITH IMPORTANT FILES.
 // THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. I'd keep improving this program(it's still very basic)..
 // I will use an algorithm like RSA algorithm. I altered it because of handling big files.
@@ -127,11 +129,18 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
         lineEncrypt(*it, prime1, prime2, option);
         j++;
         int u = (j * 100) / textLines->size();
-        for (int k = 0; k < u; k++)
-            if (u % 10 == 0 && u % 6 == 0) cout << "Processing %" << u << endl; // very basic load-bar
+        progress += u;
+        /*progressBar value array
+         for (int k = 0; k < u; k++)
+             if (u % 10 == 0 && u % 6 == 0) cout << "Processing %" << u << endl; // very basic load-bar
+     }
+     cout << "Processing %100" << endl;*/
     }
-    cout << "Processing %100" << endl;
 }
+int FILEO::getProgress() {
+    return progress;
+}
+
 void startingMsg() {
     cout << "CAUTION : USING THIS PROGRAM IS AT YOUR OWN RISK! PLEASE DON'T USE WITH IMPORTANT FILES." << endl;
     cout << "Welcome! This program is built for encryption files.\nIt's more efficient with smaller files.\nProgram encrypts with a small amount of mistake (but you'd lose your data!!!) when you try with big files!" << endl;

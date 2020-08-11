@@ -16,5 +16,6 @@ public:
 	~wxAppLaunch();
 public:
 	virtual bool OnInit();
+	virtual int OnExit();
 };
 

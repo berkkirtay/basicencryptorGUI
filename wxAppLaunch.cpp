@@ -23,3 +23,6 @@ bool wxAppLaunch::OnInit() {
 	frame->Show();
 	return true;
 }
+int wxAppLaunch::OnExit() {
+	return 0;
+}

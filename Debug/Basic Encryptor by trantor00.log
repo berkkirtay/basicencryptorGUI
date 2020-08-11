@@ -1,8 +1,8 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (WindowsProject3.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   BasicEncryptor.cpp
-C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(110,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(117,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(119,31): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(112,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(119,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Berk\source\repos\Basic Encryptor by trantor00\Basic Encryptor by trantor00\BasicEncryptor.cpp(121,31): warning C4018: '<': signed/unsigned mismatch
   wxAppLaunch.cpp
   wxMain.cpp
   Generating Code...

@@ -5,6 +5,7 @@
 #include <vector>
 #include <math.h>
 
+
 class FILEO {
 private:
 	std::vector<std::string>* textLines; // using vector instead of array is far more efficient for memory handling!
@@ -13,6 +14,7 @@ private:
 	std::fstream FILE;
 	int x=0;
 	int y=0;
+	int progress = 0;
 
 public:
 	FILEO(std::string* fileName, std::string* outFileName, int opt);
@@ -25,7 +27,7 @@ public:
 	void writingFile();
 	void lineEncrypt(std::string& line, int prime1, int prime2, int option);
 	void encrypt(int prime1, int prime2, int option);
-
+	int getProgress();
 };
 
 //Global prototypes
