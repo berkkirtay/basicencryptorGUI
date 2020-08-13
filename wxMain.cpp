@@ -13,7 +13,7 @@ wxEND_EVENT_TABLE()
 wxMain::wxMain(): wxFrame(nullptr, wxID_ANY, "Basic Encryptor by trantor00",wxPoint(300,100),wxSize(350,200)){
     tx1 = new wxStaticText(this, wxID_ANY, "File Location: ", wxPoint(10, 10), wxSize(100, 50));
     tx2 = new wxStaticText(this, wxID_ANY, "Encrypt-Decrypt Key :", wxPoint(10, 60), wxSize(100, 50));
-    tx3 = new wxStaticText(this, wxID_ANY, wxString::Format(wxT("Operations: %d"), operations), wxPoint(250, 140), wxSize(100, 50));
+    tx3 = new wxStaticText(this, wxID_ANY, wxString::Format(wxT("File Processed: %d"), operations), wxPoint(230, 140), wxSize(100, 50));
     txt1 = new wxTextCtrl(this, wxID_ANY, "", wxPoint(110, 10), wxSize(100, 20)); 
     txt2 = new wxTextCtrl(this, wxID_ANY, "", wxPoint(110, 60), wxSize(100, 20));
     btn1 = new wxButton(this, 10001, "Encrypt!", wxPoint(110, 100), wxSize(100, 25));
@@ -22,7 +22,6 @@ wxMain::wxMain(): wxFrame(nullptr, wxID_ANY, "Basic Encryptor by trantor00",wxPo
     Layout();  // setting appropriate size 
     this->SetMinSize(this->GetSize());
     this->SetMaxSize(this->GetSize());
-    wxMessageBox("Please be careful while using this program when it comes to your important files. This program should be using only for text files!! ","Hey!");
 }
 wxMain::~wxMain() {}
 void wxMain::onClose(wxCloseEvent &event) {
@@ -39,9 +38,10 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
     if (opt == -1) *fileOut = "DecryptedFILE";
     if (txt2->GetValue() == "")
         wxMessageBox("Please enter your key!", "Error!");
+    else if (txt2->GetValue().length()<2)
+        wxMessageBox("Please enter a key which has more than 1 value!", "Error!");
     else {
         std::string skey = txt2->GetValue().ToStdString();
-
 
         key = stoi(skey);
         if (opt != -1) {
@@ -60,7 +60,7 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
         progressBar(progress);
         wxMessageBox("File Processed as " + *fileOut);
         operations++;
-        tx3->SetLabelText(wxString::Format(wxT("Operations: %d"), operations));
+        tx3->SetLabelText(wxString::Format(wxT("File Processed: %d"), operations));
     }
    
 }

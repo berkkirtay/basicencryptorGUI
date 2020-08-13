@@ -2,17 +2,19 @@
 
 
 
-// CAUTION : USING THIS PROGRAM IS AT YOUR OWN RISK! PLEASE DON'T USE WITH IMPORTANT FILES.
-// THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. I'd keep improving this program(it's still very basic)..
-// I will use an algorithm like RSA algorithm. I altered it because of handling big files.
-// Program's handling every character separately(it calculates new character every turn), so, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
-// Built by trantor00
+/* 
+   THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. I'd keep improving this program.
+   I used an algorithm like RSA and added XOR operator applying as well.
+   I made a new basic algorithm implementation which uses 5 keychars to encrypt each character in the given line according to its value with XOR operator. It can be altered to get a harder encryption. 
+   XOR operator is great for encryption because it flips the bits and gives old value after applying 2 times..
+   Program's handling every character separately(it calculates new character every turn), so, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
+   Built by trantor00
+*/
 using namespace std; // standart library namespace
 
 
 //main function
 int main() {
-    startingMsg();
     return 0; //program finished 
 }
 
@@ -91,10 +93,11 @@ void FILEO::writingFile() {
    return isValid;
 }*/
 
-void FILEO::lineEncrypt(string& line, int prime1, int prime2, int option) {  // We can change this encryption algorithm whatever way we want..
+void FILEO::lineEncrypt(string& line, int prime1, int prime2, int option, int row) {  // We can change this encryption algorithm whatever way we want..
     int N = prime1 * prime2;
     int Qn = (prime1 - 1) * (prime2 - 1);
     int temp;
+    row++;
     //public key
     int e = 2;
     while (e < Qn && e != prime1 && e != prime2) {  //for checking that e between -> 1 < e < Q(n) and greatestCommonDivisor(e, Q(n)) = 1
@@ -107,11 +110,35 @@ void FILEO::lineEncrypt(string& line, int prime1, int prime2, int option) {  // 
     int c = e * Qn;
     if (N == 0) N++;
     c = c / N;
-    c = (c * 2 - 1) * (line.length() % 5);
-    //  if (c < 0) c *= -1;
+    c = (c * 2 - 1);//* (line.length() % 5);  // taking advantage of line lengths 
+
+    //key characters
+   /* char keys[5] = {
+        prime1,
+        prime2,
+        Qn%3,
+        e,
+        c      
+   }; */
+
+
+     vector<char>* keys = new vector<char>[line.length()];  // a more complicated and difficult way to encrypt.
+     for (int j = 0; j < line.length(); j++) {
+         int key = 0;
+         if (j % 5 == 0) key = prime1 / (prime1 % row+1);
+         else if (j % 5 == 1) key = prime2 / (prime2 % row+1);
+         else if (j % 5 == 2) key = Qn % (row%j+1);
+         else if (j % 5 == 3) key = e%(j+1) + row%e;
+         else key = c % (row % j+1);
+         keys->push_back(key);
+     }
+
+    // XOR operations 
     for (int x = 0; x < line.length(); x++) {   //encryption every char on the string line..
-        if (option == -1)  line[x] -= c; // if(!isValidChar(line[x])) line[x] += c; 
-        else  line[x] += c; // if(isValidChar(!line[x])) line[x] -= c; 
+        if (option == -1)  line[x] = line[x] ^ keys->at(x); // if (!isValidChar(line[x])) line[x] = line[x] ^ keys[x % 5]; 
+        else  line[x] = line[x] ^ keys->at(x); // if (isValidChar(!line[x]))  line[x] = line[x] ^ keys[x % 5]; 
+
+        //line[x] = line[x] ^ keys[x % 5];
     }
 }
 void FILEO::encrypt(int prime1, int prime2, int option) {
@@ -126,7 +153,7 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
     }
     int j = 0;
     for (vector<string>::iterator it = textLines->begin(); it != textLines->end(); it++) {
-        lineEncrypt(*it, prime1, prime2, option);
+        lineEncrypt(*it, prime1, prime2, option, j);
         j++;
         int u = (j * 100) / textLines->size();
         progress += u;
@@ -139,11 +166,6 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
 }
 int FILEO::getProgress() {
     return progress;
-}
-
-void startingMsg() {
-    cout << "CAUTION : USING THIS PROGRAM IS AT YOUR OWN RISK! PLEASE DON'T USE WITH IMPORTANT FILES." << endl;
-    cout << "Welcome! This program is built for encryption files.\nIt's more efficient with smaller files.\nProgram encrypts with a small amount of mistake (but you'd lose your data!!!) when you try with big files!" << endl;
 }
 
 int greatestCommonDivisor(int x, int y) {

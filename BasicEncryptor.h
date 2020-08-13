@@ -25,7 +25,7 @@ public:
 	int getY();
 	void readingFile();
 	void writingFile();
-	void lineEncrypt(std::string& line, int prime1, int prime2, int option);
+	void lineEncrypt(std::string& line, int prime1, int prime2, int option, int row);
 	void encrypt(int prime1, int prime2, int option);
 	int getProgress();
 };
@@ -33,7 +33,6 @@ public:
 //Global prototypes
 int greatestCommonDivisor(int x, int y);
 int isPrime(int prime);
-void startingMsg();
 
 //bool isValidChar(char CHAR);
 
