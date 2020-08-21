@@ -1,4 +1,4 @@
-Basic encryptor wxwidgets GUI version 
+Basic encryptor-decryptor implementation with wxwidgets GUI
 Built by trantor00
 
 I used an algorithm like RSA and added XOR operator applying as well.
