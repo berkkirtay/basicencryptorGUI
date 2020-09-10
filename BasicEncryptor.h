@@ -8,16 +8,17 @@
 
 class FILEO {
 private:
-	std::vector<std::string>* textLines; // using vector instead of array is far more efficient for memory handling!
-	std::string* fileName = new std::string;
-	std::string* outFileName = new std::string;
+	std::vector<std::string> textLines; // using vector instead of array is far more efficient for memory handling!
+	std::string fileName;
+	std::string outFileName;
 	std::fstream FILE;
 	int x=0;
 	int y=0;
 	int progress = 0;
+	
 
 public:
-	FILEO(std::string* fileName, std::string* outFileName, int opt);
+	FILEO(std::string fileName, std::string outFileName, int opt);
 	~FILEO();
 public:
 	void createKey(int key);
@@ -33,8 +34,7 @@ public:
 //Global prototypes
 int greatestCommonDivisor(int x, int y);
 int isPrime(int prime);
-
-//bool isValidChar(char CHAR);
+bool isValidChar(char CHAR);
 
 
 

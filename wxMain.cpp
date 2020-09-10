@@ -24,18 +24,17 @@ wxMain::wxMain(): wxFrame(nullptr, wxID_ANY, "Basic Encryptor by trantor00",wxPo
     this->SetMaxSize(this->GetSize());
 }
 wxMain::~wxMain() {}
+
 void wxMain::onClose(wxCloseEvent &event) {
     Destroy();
 }
 void wxMain::onButtonClicked(wxCommandEvent &event) {
-    std::string* newFile =new std::string;
-    *newFile = fileName;
-    std::string* fileOut = new std::string;
-    *fileOut = "EncryptedFILE";
+    std::string newFile = fileName;
+    std::string fileOut = "EncryptedFILE";
     int x, y;
     int key=1;
     int opt = getOpt();
-    if (opt == -1) *fileOut = "DecryptedFILE";
+    if (opt == -1) fileOut = "DecryptedFILE";
     if (txt2->GetValue() == "")
         wxMessageBox("Please enter your key!", "Error!");
     else if (txt2->GetValue().length()<2)
@@ -48,17 +47,18 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
             wxString keymsg = wxString::Format(wxT("Your key is %d. Don't forget it!"), key);
             wxMessageBox(keymsg, "Hey!");
       }
-
-        FILEO newEncryption(newFile, fileOut, opt);
-        newEncryption.createKey(key);
-        x = newEncryption.getX();
-        y = newEncryption.getY();
-        newEncryption.readingFile();
-        newEncryption.encrypt(x, y, opt);  // enrypt-decrypt section!!
-        int progress=newEncryption.getProgress();
-        newEncryption.writingFile();
+        
+        std::unique_ptr<FILEO> newEncryption(new FILEO(newFile, fileOut, opt));
+        newEncryption->createKey(key);
+        x = newEncryption->getX();
+        y = newEncryption->getY();
+      //  wxMessageBox(wxString::Format(wxT("x: %d, y: %d"), x,y));
+        newEncryption->readingFile();
+        newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!
+        int progress=newEncryption->getProgress();
         progressBar(progress);
-        wxMessageBox("File Processed as " + *fileOut);
+        newEncryption->writingFile();
+        wxMessageBox("File Processed as " + fileOut);
         operations++;
         tx3->SetLabelText(wxString::Format(wxT("File Processed: %d"), operations));
     }
@@ -81,7 +81,6 @@ void wxMain::onSecButtonClicked(wxCommandEvent& event) {
     }
     else
      setfileLocation(txt1->GetValue().ToStdString()); 
-      
 }
 void wxMain::setfileLocation(std::string fileLocation) {
     this->fileLocation = fileLocation;
@@ -101,7 +100,7 @@ int wxMain::getOpt() {
 
 void wxMain::progressBar(int progress) {
     wxFrame* frame = new wxFrame(NULL, wxID_ANY, "progressbar");
-    wxPoint *points = new wxPoint(400, 400);
+    wxPoint* points = new wxPoint(400, 400);
     frame->SetPosition(*points);
     wxProgressDialog* progressBar = new wxProgressDialog(wxT("File Processing"), wxT("Please wait"), progress, frame, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
     progressBar->SetIcon(wxIcon(wxT("encrypt.ico"), wxBITMAP_TYPE_ICO));  // setting ico 
@@ -111,7 +110,7 @@ void wxMain::progressBar(int progress) {
             if (i % 31) progressBar->Update(i);
         }
     
-    progressBar->Update(progress);
+    progressBar->Update(progress);  
     delete progressBar;
     delete frame;
 
