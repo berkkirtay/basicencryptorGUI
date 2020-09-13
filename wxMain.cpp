@@ -43,21 +43,20 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
         std::string skey = txt2->GetValue().ToStdString();
 
         key = stoi(skey);
-        if (opt != -1) {
-            wxString keymsg = wxString::Format(wxT("Your key is %d. Don't forget it!"), key);
-            wxMessageBox(keymsg, "Hey!");
-      }
-        
         std::unique_ptr<FILEO> newEncryption(new FILEO(newFile, fileOut, opt));
         newEncryption->createKey(key);
         x = newEncryption->getX();
         y = newEncryption->getY();
-      //  wxMessageBox(wxString::Format(wxT("x: %d, y: %d"), x,y));
-        newEncryption->readingFile();
+        if (opt != -1) {
+            wxString keymsg = wxString::Format(wxT("Your key is %d. Generated prime numbers are %d and %d"), key, x, y);
+            wxMessageBox(keymsg, "Hey!");
+ }
+        newEncryption->setopt(opt);
+        newEncryption->readingFile(opt);
         newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!
         int progress=newEncryption->getProgress();
         progressBar(progress);
-        newEncryption->writingFile();
+        newEncryption->writingFile(opt);
         wxMessageBox("File Processed as " + fileOut);
         operations++;
         tx3->SetLabelText(wxString::Format(wxT("File Processed: %d"), operations));

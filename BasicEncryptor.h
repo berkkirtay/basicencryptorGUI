@@ -1,4 +1,4 @@
-
+#include "RSA_Algorithm.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -9,32 +9,31 @@
 class FILEO {
 private:
 	std::vector<std::string> textLines; // using vector instead of array is far more efficient for memory handling!
+	std::vector<int> decryptedDATA;
+	std::vector<int> encryptedDATA;
 	std::string fileName;
 	std::string outFileName;
 	std::fstream FILE;
 	int x=0;
 	int y=0;
 	int progress = 0;
-	
+	int option;
 
 public:
 	FILEO(std::string fileName, std::string outFileName, int opt);
-	~FILEO();
-public:
 	void createKey(int key);
 	int getX();
 	int getY();
-	void readingFile();
-	void writingFile();
-	void lineEncrypt(std::string& line, int prime1, int prime2, int option, int row);
+	void readingFile(int opt);
+	void writingFile(int opt);
 	void encrypt(int prime1, int prime2, int option);
+	void setopt(int opt);
 	int getProgress();
 };
 
 //Global prototypes
-int greatestCommonDivisor(int x, int y);
 int isPrime(int prime);
-bool isValidChar(char CHAR);
+//bool isValidChar(char CHAR);
 
 
 

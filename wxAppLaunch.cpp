@@ -1,19 +1,9 @@
 #include "wxAppLaunch.h"
 
-
-
-
 wxIMPLEMENT_APP(wxAppLaunch);
 
-
-wxAppLaunch::wxAppLaunch() {
-
-
-}
-wxAppLaunch::~wxAppLaunch() {
-
-
-}
+wxAppLaunch::wxAppLaunch() {}
+wxAppLaunch::~wxAppLaunch() {}
 
 bool wxAppLaunch::OnInit() {
 	frame = new wxMain();
