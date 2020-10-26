@@ -3,6 +3,7 @@
 #include "BasicEncryptor.h"
 #include <wx/progdlg.h>
 
+
 class wxMain : public wxFrame{
 private:
 	std::string fileLocation;

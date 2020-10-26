@@ -1,12 +1,35 @@
 #include "BasicEncryptor.h"
+/*MIT License
+
+Copyright (c) 2020 trantor00
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 /*
    THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. I'd keep improving this program.
    This time I used exact RSA Algorithm to strengthen encryption. I'd add XOR as well.
-   Program's handling every character separately(it calculates new character every turn), 
+   Program's handling every character separately(it calculates new character every turn),
    so, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
    Built by trantor00
 */
+
 using namespace std; // standart library namespace
 
 //definitions
@@ -15,6 +38,7 @@ FILEO::FILEO(string fileName, string outFileName, int opt) {
     this->outFileName = outFileName;   
 }
 
+
 void FILEO::createKey(int key) {  // prime number generator
     x += key % 51; key /= 13;
     x += key % 67;
@@ -22,10 +46,10 @@ void FILEO::createKey(int key) {  // prime number generator
     y += (key % x);
     while (true) {  //creating 2 prime numbers from the key given.  
         y += key % 3;
-        if (isPrime(x)) {
+        if (isPrime(x) && x>100) {
             y += key % x;
             while (true) {
-                if (isPrime(y) && y != x)  break;
+                if (isPrime(y) && y != x && y>100)  break;
                 else y++;
             }
             break;
@@ -42,22 +66,44 @@ int FILEO::getY() {
 
 void FILEO::readingFile(int opt) {
     fstream FILE;
+    if(opt !=-1){
     try {
-        FILE.open(fileName, ios::in | ios::binary);  //input file!!!!  
-        if (!FILE)
-            throw "File can't be opening!";
+    FILE.open(fileName, ios::in | std::ios::binary | std::ios::ate);
+    if (!FILE)
+        throw "File can't be opening!";
     }
     catch (exception& e) {
-        cout << "FILE HANDLING ERROR: " << e.what() << endl;
-        system("pause");
+         cout << "FILE HANDLING ERROR: " << e.what() << endl;
+         system("pause");
     }
-    while (FILE) { //It's an object so we can look for if it exists or not!
-        string newLine;
-        getline(FILE, newLine);
-        textLines.push_back(newLine); // pushing every new line in the list
+    if (FILE) {
+        std::streampos size = FILE.tellg();
+        buffer8_t = new char[size];
+        FILE.seekg(0, std::ios::beg);
+        filesize = size;
+        FILE.read(buffer8_t, size);
+        FILE.close();
     }
-    FILE.close();
-}
+    }
+    else {
+        try {
+            FILE.open(fileName, ios::in | std::ios::binary);
+            if (!FILE)
+                throw "File can't be opening!";
+        }
+        catch (exception& e) {
+            cout << "FILE HANDLING ERROR: " << e.what() << endl;
+            system("pause");
+        }
+            while(FILE) {                    
+                string newLine;
+                getline(FILE, newLine);
+                textLines.push_back(newLine);
+            }
+            FILE.close();
+        }     
+    }
+
 void FILEO::writingFile(int opt) {
     fstream OUTFILE;
     try {
@@ -75,19 +121,13 @@ void FILEO::writingFile(int opt) {
         }
     }
     else {
+      //  OUTFILE << fileName << endl;  // for remembering the file name later..
         for (vector<int>::iterator it = encryptedDATA.begin(); it != encryptedDATA.end(); it++) {
-          OUTFILE << *it << endl;
-           
+            OUTFILE << (int)*it << endl;
         }
     }
     OUTFILE.close();
 }
-/*bool isValidChar(char CHAR) {
-    bool isValid;
-    if (CHAR >= 2 && CHAR <= 126)  isValid = true;
-    else isValid = false;
-    return isValid;
-}*/
 
 void FILEO::encrypt(int prime1, int prime2, int option) {
     string tempName = fileName;
@@ -103,50 +143,55 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
     if (encryptionType == 0) {
         RSA_Algorithm newEncryption;  // RSA_Algorithm class
         newEncryption.generateKey(prime1, prime2);
-
-        for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
             if (option == -1) {  //decryption
-                if (*it == "") break;
-                int data = newEncryption.decryption(stoi(*it));
-                decryptedDATA.push_back(data);
-            }
-            else {  //encryption
-                for (int x = 0; x < it->length(); x++) {
-                    int data = newEncryption.encryption(it->at(x));
-                    encryptedDATA.push_back(data);
+                for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
+                    if (*it == "") break;
+                 /*   if (it == textLines.begin()) {
+                        outFileName = *it + ".DEC";
+                        continue;
+                    }*/
+                    int data = newEncryption.decryption(stoi(*it));
+                    decryptedDATA.push_back(data);
+                    j++;
+                    progress += j*2 / textLines.size();
                 }
             }
-            j++;
-            int u = (j * 100) / textLines.size();
-            progress += u;
-        }
-    }
+            else {  //encryption
+                for (int x = 0; x < filesize; x++) {
+                    int data = newEncryption.encryption(buffer8_t[x]);
+                    encryptedDATA.push_back(data);
+                    j++;
+                    progress += (double) j / filesize;
+                }
+            }      
+   }  
     else if (encryptionType == 1) {
         BASICXOR_Algorithm newEncryption;  // BASICXOR_Algorithm class
         newEncryption.generateKey(prime1, prime2);
 
-        for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
-            if (option == -1) {  //decryption
+        if (option == -1) {  //decryption
+            for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
                 if (*it == "") break;
                 int data = newEncryption.decryption(stoi(*it));
                 decryptedDATA.push_back(data);
+                j++;
+                progress += j*2 / textLines.size();
             }
-            else {  //encryption
-                for (int x = 0; x < it->length(); x++) {
-                    int data = newEncryption.encryption(it->at(x));
-                    encryptedDATA.push_back(data);
-                }
-            }
-            j++;
-            int u = (j * 100) / textLines.size();
-            progress += u;
         }
-    }
-
-    else {
-        cout << "error" << endl;
-    }
+              else {  //encryption
+                  for (int x = 0; x < filesize; x++) {
+                      int data = newEncryption.encryption(buffer8_t[x]);
+                      encryptedDATA.push_back(data);
+                      j++;
+                      progress += (double) j  / filesize;
+                  }
+              }
+          }
+      else {
+          cerr << "error" << endl;
+      }
 }
+
 int FILEO::getProgress() {
     return progress;
 }

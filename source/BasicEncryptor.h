@@ -9,7 +9,7 @@
 
 class FILEO {
 private:
-	std::vector<std::string> textLines; // using vector instead of array is far more efficient for memory handling!
+	std::vector<std::string> textLines;
 	std::vector<int> decryptedDATA;
 	std::vector<int> encryptedDATA;
 	std::string fileName;
@@ -17,12 +17,15 @@ private:
 	std::fstream FILE;
 	int x=0;
 	int y=0;
-	int progress = 0;
+	double progress = 0;
 	int option;
 	int encryptionType = 0;
+	char* buffer8_t = nullptr;
+	int filesize = 0;
 
 public:
 	FILEO(std::string fileName, std::string outFileName, int opt);
+	~FILEO() { delete[] buffer8_t; }
 	void createKey(int key);
 	int getX();
 	int getY();

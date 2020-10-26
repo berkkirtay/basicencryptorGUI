@@ -75,9 +75,9 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
         newEncryption->setopt(opt);
         newEncryption->setencry(encryptionType);
         newEncryption->readingFile(opt);
-        newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!
-        int progress=newEncryption->getProgress();
-        progressBar(progress);
+        newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!        
+        int progress = newEncryption->getProgress();
+     //   progressBar(progress);     
         newEncryption->writingFile(opt);
         wxMessageBox("File Processed as " + fileOut);
         operations++;
@@ -131,8 +131,8 @@ void wxMain::progressBar(int progress) {
     progressBar->SetIcon(wxIcon(wxT("encrypt.ico"), wxBITMAP_TYPE_ICO));  // setting ico 
  
         for (int i = 0; i < progress; i++) {
-             wxMilliSleep(0.0005); 
-            if (i % 31) progressBar->Update(i);
+             wxMilliSleep(0.000005); 
+            if (i % 2) progressBar->Update(i);
         }
     
     progressBar->Update(progress);  
