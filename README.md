@@ -6,7 +6,7 @@ I'd add XOR as well for additional encryption security.
 I also solved some memory leak problems..
 Again program handles every character separately and applies RSA. 
 
-From now on the program can encrypt all types of files(though it's a little slow..)! 
+From now on the program can encrypt all types of files(though it's a little bit slow..)! 
 
 
 Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and also included a cmake file so you can build it on the linux easily.
