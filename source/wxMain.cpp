@@ -1,5 +1,6 @@
 #include "wxMain.h"
 #include <fstream>
+#include <thread>
 #include "wx/filedlg.h"
 
 //events
@@ -72,13 +73,19 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
             wxString keymsg = wxString::Format(wxT("Your key is %d. Generated prime numbers are %d and %d"), key, x, y);
             wxMessageBox(keymsg, "Hey!");
  }
-        newEncryption->setopt(opt);
-        newEncryption->setencry(encryptionType);
-        newEncryption->readingFile(opt);
-        newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!        
-        int progress = newEncryption->getProgress();
-     //   progressBar(progress);     
-        newEncryption->writingFile(opt);
+        
+        int progress = 0;
+       
+        std::thread prgthrd([&]{ 
+            newEncryption->setopt(opt);
+            newEncryption->setencry(encryptionType);
+            newEncryption->readingFile(opt);
+            newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!        
+            progress = newEncryption->getProgress();
+            newEncryption->writingFile(opt);      
+            });
+        progressBar(progress);
+        prgthrd.join();   
         wxMessageBox("File Processed as " + fileOut);
         operations++;
         tx3->SetLabelText(wxString::Format(wxT("File Processed: %d"), operations));
@@ -131,7 +138,7 @@ void wxMain::progressBar(int progress) {
     progressBar->SetIcon(wxIcon(wxT("encrypt.ico"), wxBITMAP_TYPE_ICO));  // setting ico 
  
         for (int i = 0; i < progress; i++) {
-             wxMilliSleep(0.000005); 
+             wxMilliSleep(10); 
             if (i % 2) progressBar->Update(i);
         }
     

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
+#include <thread>
 
 
 class FILEO {
@@ -17,7 +18,7 @@ private:
 	std::fstream FILE;
 	int x=0;
 	int y=0;
-	double progress = 0;
+    int progress = 0;
 	int option;
 	int encryptionType = 0;
 	char* buffer8_t = nullptr;

@@ -1,20 +1,20 @@
-#pragma once
 #include <iostream>
 #include <string>
 #include <math.h>
 #include <vector>
 
+using integer = unsigned long long;
 
-#pragma once
-
-class RSA_Algorithm{
+class RSA_Algorithm {
 private:
-	std::pair<int, int> publicKey;
-	std::pair<int, int> privateKey;
+	std::pair<integer, integer> publicKey;
+	std::pair<integer, integer> privateKey;
 public:
 	RSA_Algorithm();
-	int encryption(int data);
-	int decryption(int data);
+	integer encryption(int data);
+	integer decryption(int data);
 	void generateKey(int prime1, int prime2);
-	int greatestCommonDivisor(int x, int y);
+	integer greatestCommonDivisor(integer x, integer y);
 };
+
+

@@ -8,7 +8,7 @@ void BASICXOR_Algorithm::generateKey(int prime1, int prime2) {
 		prime2 += prime1 % 7;
 		prime1 /= 7;
 	}
-	key = (Qn % Q) + prime2;
+	key = (Qn * Q) + prime2;
 }
 
 int BASICXOR_Algorithm::encryption(int data) {

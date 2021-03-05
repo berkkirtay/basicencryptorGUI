@@ -40,16 +40,16 @@ FILEO::FILEO(string fileName, string outFileName, int opt) {
 
 
 void FILEO::createKey(int key) {  // prime number generator
-    x += key % 51; key /= 13;
-    x += key % 67;
+    x += key % 1111; key /= 13;
+    x += key % 3333;
     key *= x;
     y += (key % x);
     while (true) {  //creating 2 prime numbers from the key given.  
         y += key % 3;
-        if (isPrime(x) && x>100) {
+        if (isPrime(x) && x>1000) {
             y += key % x;
             while (true) {
-                if (isPrime(y) && y != x && y>100)  break;
+                if (isPrime(y) && y != x && y>1000)  break;
                 else y++;
             }
             break;
@@ -117,13 +117,13 @@ void FILEO::writingFile(int opt) {
     }
     if (opt == -1) {
         for (vector<int>::iterator it = decryptedDATA.begin(); it != decryptedDATA.end(); it++) {
-           OUTFILE << (char)*it; 
+           OUTFILE << static_cast<char>(*it); 
         }
     }
     else {
       //  OUTFILE << fileName << endl;  // for remembering the file name later..
         for (vector<int>::iterator it = encryptedDATA.begin(); it != encryptedDATA.end(); it++) {
-            OUTFILE << (int)*it << endl;
+            OUTFILE << static_cast<int>(*it) << endl;
         }
     }
     OUTFILE.close();
@@ -139,29 +139,61 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
             break;
         }
     }
-    int j = 0;
     if (encryptionType == 0) {
         RSA_Algorithm newEncryption;  // RSA_Algorithm class
         newEncryption.generateKey(prime1, prime2);
             if (option == -1) {  //decryption
-                for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
-                    if (*it == "") break;
+            /*    for (vector<string>::iterator it = textLines.begin(); it != textLines.end(); it++) {
+                    if (*it == "") { break; }
                  /*   if (it == textLines.begin()) {
                         outFileName = *it + ".DEC";
                         continue;
-                    }*/
+                    }
                     int data = newEncryption.decryption(stoi(*it));
                     decryptedDATA.push_back(data);
-                    j++;
-                    progress += j*2 / textLines.size();
+                    progress++;
+                }*/
+
+                // I just pre-implemented those threads.. It's experimental but can be improved later.
+                std::vector<int> dec1;
+                std::thread thrd1([&] {
+                    for (int x = 0; x < textLines.size() / 2; x++) {
+                        if (textLines.at(x) == "") {
+                            break;
+                        }
+                        int data = newEncryption.decryption(stoi(textLines.at(x)));
+                        dec1.push_back(data);
+                        progress++;
+                    }
+                });
+                std::vector<int> dec2;
+                std::thread thrd2([&] {
+                    for (int x = textLines.size() / 2; x < textLines.size(); x++) {
+                        if (textLines.at(x) == "") {
+                            break;
+                        }
+                        int data = newEncryption.decryption(stoi(textLines.at(x)));
+                        dec2.push_back(data);
+                        progress++;
+                    }
+                    });
+
+                thrd1.join();
+                thrd2.join();
+
+                for (vector<int>::iterator it = dec1.begin(); it != dec1.end(); it++) {
+                    decryptedDATA.push_back(*it);
                 }
+                for (vector<int>::iterator it = dec2.begin(); it != dec2.end(); it++) {
+                    decryptedDATA.push_back(*it);
+                }
+               
             }
             else {  //encryption
                 for (int x = 0; x < filesize; x++) {
                     int data = newEncryption.encryption(buffer8_t[x]);
                     encryptedDATA.push_back(data);
-                    j++;
-                    progress += (double) j / filesize;
+                    progress++;
                 }
             }      
    }  
@@ -174,21 +206,19 @@ void FILEO::encrypt(int prime1, int prime2, int option) {
                 if (*it == "") break;
                 int data = newEncryption.decryption(stoi(*it));
                 decryptedDATA.push_back(data);
-                j++;
-                progress += j*2 / textLines.size();
+                progress++;
             }
         }
               else {  //encryption
                   for (int x = 0; x < filesize; x++) {
                       int data = newEncryption.encryption(buffer8_t[x]);
                       encryptedDATA.push_back(data);
-                      j++;
-                      progress += (double) j  / filesize;
+                      progress++;
                   }
               }
           }
       else {
-          cerr << "error" << endl;
+          cerr << "error on: FILEO::encrypt " << endl;
       }
 }
 
