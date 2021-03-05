@@ -54,13 +54,13 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
     std::string newFile = fileName;
     std::string fileOut = "EncryptedFILE";
     int x, y;
-    int key=1;
+    int key = 1;
     int opt = getOpt();
     if (opt == -1) fileOut = "DecryptedFILE";
     if (txt2->GetValue() == "")
         wxMessageBox("Please enter your key!", "Error!");
     else if (txt2->GetValue().length()<2)
-        wxMessageBox("Please enter a key which has more than 1 value!", "Error!");
+        wxMessageBox("Please enter a key which has more than 1 character!", "Error!");
     else {
         std::string skey = txt2->GetValue().ToStdString();
 
@@ -75,13 +75,12 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
  }
         
         int progress = 0;
-       
+        newEncryption->setopt(opt);
+        newEncryption->setencry(encryptionType);
+        newEncryption->readingFile(opt);
+        progress = newEncryption->getProgress();
         std::thread prgthrd([&]{ 
-            newEncryption->setopt(opt);
-            newEncryption->setencry(encryptionType);
-            newEncryption->readingFile(opt);
-            newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!        
-            progress = newEncryption->getProgress();
+            newEncryption->encrypt(x, y, opt);  // enrypt-decrypt section!!              
             newEncryption->writingFile(opt);      
             });
         progressBar(progress);
@@ -93,7 +92,6 @@ void wxMain::onButtonClicked(wxCommandEvent &event) {
    
 }
 void wxMain::onSecButtonClicked(wxCommandEvent& event) {
-    
     wxFileDialog* openFileDialog = new wxFileDialog(this, "Choose a file to open");
     if (openFileDialog->ShowModal() == wxID_OK){
          path = openFileDialog->GetPath();
@@ -138,7 +136,7 @@ void wxMain::progressBar(int progress) {
     progressBar->SetIcon(wxIcon(wxT("encrypt.ico"), wxBITMAP_TYPE_ICO));  // setting ico 
  
         for (int i = 0; i < progress; i++) {
-             wxMilliSleep(10); 
+             wxMilliSleep(0.5); 
             if (i % 2) progressBar->Update(i);
         }
     

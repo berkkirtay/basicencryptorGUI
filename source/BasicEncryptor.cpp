@@ -31,6 +31,7 @@ SOFTWARE.
 */
 
 using namespace std; // standart library namespace
+using namespace RSA_;
 
 //definitions
 FILEO::FILEO(string fileName, string outFileName, int opt) {
@@ -39,18 +40,22 @@ FILEO::FILEO(string fileName, string outFileName, int opt) {
 }
 
 
-void FILEO::createKey(int key) {  // prime number generator
+void FILEO::createKey(RSA_::integer key) {  // prime number generator
     x += key % 1111; key /= 13;
     x += key % 3333;
     key *= x;
     y += (key % x);
     while (true) {  //creating 2 prime numbers from the key given.  
         y += key % 3;
-        if (isPrime(x) && x>1000) {
+        if (isPrime(x) && x>3000) {
             y += key % x;
             while (true) {
-                if (isPrime(y) && y != x && y>1000)  break;
-                else y++;
+                if (isPrime(y) && y != x && y > x+2000) {
+                    break;
+                }
+                else {
+                    y++;
+                }
             }
             break;
         }
@@ -69,8 +74,9 @@ void FILEO::readingFile(int opt) {
     if(opt !=-1){
     try {
     FILE.open(fileName, ios::in | std::ios::binary | std::ios::ate);
-    if (!FILE)
+    if (!FILE) {
         throw "File can't be opening!";
+    }
     }
     catch (exception& e) {
          cout << "FILE HANDLING ERROR: " << e.what() << endl;
@@ -82,6 +88,7 @@ void FILEO::readingFile(int opt) {
         FILE.seekg(0, std::ios::beg);
         filesize = size;
         FILE.read(buffer8_t, size);
+        progress += size / 5;
         FILE.close();
     }
     }
@@ -99,6 +106,7 @@ void FILEO::readingFile(int opt) {
                 string newLine;
                 getline(FILE, newLine);
                 textLines.push_back(newLine);
+                progress++;
             }
             FILE.close();
         }     

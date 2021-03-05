@@ -27,7 +27,7 @@ private:
 public:
 	FILEO(std::string fileName, std::string outFileName, int opt);
 	~FILEO() { delete[] buffer8_t; }
-	void createKey(int key);
+	void createKey(RSA_::integer key);
 	int getX();
 	int getY();
 	void readingFile(int opt);
