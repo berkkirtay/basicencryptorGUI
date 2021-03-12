@@ -1,24 +1,22 @@
 ## Basic encryptor-decryptor implementation with wxwidgets GUI Built by trantor00
 
-This time I used exact RSA Algorithm to strengthen encryption. RSA_Algorithm class handles encryption and encrypted files consist only numbers anymore.
-I'd add XOR as well for additional encryption security.
+RSA_Algorithm class handles encryption and encrypted files consist only numbers now.
+The program handles every character separately and applies RSA after creating a basic hash function for every character.
 
-I also solved some memory leak problems..
-Again program handles every character separately and applies RSA. 
-
-From now on the program can encrypt all types of files(though it's a little bit slow..)! 
-
-
-Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and also included a cmake file so you can build it on the linux easily.
+This program can encrypt all kinds of file types. For additional security you can change the prime generator algorithm to get much bigger prime numbers.
+Also some functionalities or file handling algorithms can be improved to gain efficiency.
+BASICXOR_Algorithm class has a very weak algorithm and it shouldn't be used for encrption purposes. I only added it as an addition to the program. But I may remove it from the project in the future.
 
 ## How to: 
-You only choose a file and encrytion type! Then you can encrypt or decrypt it with your key.
+Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and also included a cmake file so you can build it on linux easily.
+
+You should choose a file and an encrytion type! Then you can encrypt or decrypt it with your key.
 
 ## Choosing the encryption type
 ![Enc1](https://i.imgur.com/4O6wplR.png)
 
 ## Generated prime numbers
-![Enc2](https://i.imgur.com/Jzy5zT7.png)
+![Enc2](https://imgur.com/a/D8zwwkd)
 
 ## Processed file
 ![Enc3](https://i.imgur.com/cBjoSww.png)
