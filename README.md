@@ -16,7 +16,7 @@ You should choose a file and an encrytion type! Then you can encrypt or decrypt 
 ![Enc1](https://i.imgur.com/4O6wplR.png)
 
 ## Generated prime numbers
-![Enc2](https://imgur.com/a/D8zwwkd)
+![Enc2](https://i.imgur.com/ybcgz1A.png)
 
 ## Processed file
 ![Enc3](https://i.imgur.com/cBjoSww.png)
