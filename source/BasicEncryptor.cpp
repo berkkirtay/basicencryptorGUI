@@ -24,7 +24,7 @@ SOFTWARE.
 
 /*
    THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. It shouldn't be used for professional purposes.
-This time I used exact RSA Algorithm to strengthen encryption.
+   This time I used exact RSA Algorithm to strengthen encryption.
    Program's handling every character separately(It processes new character every turn),
    So, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
    Built by trantorberk
