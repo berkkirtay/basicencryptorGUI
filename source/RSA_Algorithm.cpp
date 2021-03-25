@@ -21,7 +21,6 @@ void RSA_Algorithm::generateKey(int prime1, int prime2) {
             e++;
         }
     }
-    std::cout << "e: " << e << std::endl;
     publicKey = std::make_pair(e, N);
     //  std::cout << "public key (e,N) : " << publicKey.first << "," << publicKey.second << std::endl;
 
@@ -36,7 +35,6 @@ void RSA_Algorithm::generateKey(int prime1, int prime2) {
         }
     }
     privateKey = std::make_pair(d, N);
-    std::cout << "d: " << d << std::endl;
     //  std::cout << "private key (e,N) : " << privateKey.first << "," << privateKey.second << std::endl;
 }
 integer RSA_Algorithm::encryption(integer data) {
