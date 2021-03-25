@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 /*
-   THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. I'd keep improving this program.
-   This time I used exact RSA Algorithm to strengthen encryption. I'd add XOR as well.
-   Program's handling every character separately(it calculates new character every turn),
-   so, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
-   Built by trantor00
+   THIS PROGRAM IS ONLY FOR EDUCATIONAL OR TRAINING. It shouldn't be used for professional purposes.
+This time I used exact RSA Algorithm to strengthen encryption.
+   Program's handling every character separately(It processes new character every turn),
+   So, it works a bit slowly if we try handling big files like mp4, zip, iso etc. Of course It's way too more suitable using with text files.
+   Built by trantorberk
 */
 
 using namespace std; // standart library namespace
@@ -40,8 +40,10 @@ FILEO::FILEO(string fileName, string outFileName, int opt) {
 }
 
 
-void FILEO::createKey(RSA_::integer key) {  // prime number generator
-    x += key % 1111; key /= 13;
+void FILEO::createKey(RSA_::integer key) { 
+    // In order to get bigger primes we should do some changes here.
+    // We can directly assign prime numbers explicitly if the prime numbers are too big to generate.
+    x += key % 2111; key /= 13;
     x += key % 3333;
     key *= x;
     y += (key % x);

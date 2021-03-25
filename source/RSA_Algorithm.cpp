@@ -2,16 +2,19 @@
 
 using namespace RSA_;
 
-RSA_Algorithm::RSA_Algorithm() {}  // Prime numbers should be big for a robust encryption. So, data can't be decrypted without knowing the key..
+RSA_Algorithm::RSA_Algorithm() {}  
+// Prime numbers should be big for a robust encryption. So, data can't be decrypted without knowing the key..
 
 void RSA_Algorithm::generateKey(int prime1, int prime2) {
-    integer N = prime1 * prime2;
-    integer Qn = (prime1 - 1) * (prime2 - 1);
+    integer p1 = static_cast<integer>(prime1);
+    integer p2 = static_cast<integer>(prime2);
+    integer N = p1 * p2;
+    integer Qn = (p1 - 1) * (p2 - 1);
 
     //public key (e,N)
     integer e = 2;
-    while (e < Qn) {  //for checking that e between -> 1 < e < Q(n) and greatestCommonDivisor(e, Q(n)) = 1, Hamming weight : 0x10001 
-        if (greatestCommonDivisor(e, Qn) == 1 && e > 500) {  // Again e should be big in order to get a powerful encryption
+    while (e < Qn) {  //for checking that e between -> 1 < e < Q(n) and greatestCommonDivisor(e, Q(n)) = 1.
+        if (greatestCommonDivisor(e, Qn) == 1 && e > 500) {  // e should be a big number in order to get a powerful encryption.
             break;
         }
         else {
@@ -44,28 +47,28 @@ integer RSA_Algorithm::encryption(integer data) {
         xdata %= publicKey.second;
     }
     return xdata;
-    //  integer p = pow(data, publicKey.first);
-    //  integer c = p % publicKey.second;
-    //  return c;
+    /*integer p = pow(data, publicKey.first);
+      integer c = p % publicKey.second;
+      return c; */
 }
 
 integer RSA_Algorithm::decryption(integer data) {
     integer xdata = 1;
     for (int x = 0; x < privateKey.first; x++) {
-        xdata *= data;  // simply taking powers of data..
+        xdata *= data;  // simply taking powers of the data..
         xdata %= privateKey.second;
     }
     xdata = basicHashing(xdata, 0);
     return xdata;
-    //  long long p = pow(data, privateKey.first); We cannot do this operation with that way since d can take value like 227831 and cause overflow.
-     // int m = p % privateKey.second;
-     // return m;
+    //We cannot do this operation with that way since d can take a value like 227831 and cause an overflow.
+    /*long long p = pow(data, privateKey.first); 
+      int m = p % privateKey.second;
+      return m; */
 }
 
 integer RSA_Algorithm::basicHashing(integer data, int opt) {
     int defaultHash = 0xF0A12B;
     defaultHash = (defaultHash + (publicKey.first % 100)) % publicKey.first;
-    std::cout << "def : " << defaultHash << std::endl;
     if (opt == 0) {
         data ^= publicKey.first - 1;
         data /= defaultHash;

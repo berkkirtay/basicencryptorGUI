@@ -22,7 +22,7 @@ private:
 	int option;
 	int encryptionType = 0;
 	char* buffer8_t = nullptr;
-	int filesize = 0;
+	size_t filesize = 0;
 
 public:
 	FILEO(std::string fileName, std::string outFileName, int opt);
