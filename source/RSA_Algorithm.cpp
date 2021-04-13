@@ -14,13 +14,14 @@ void RSA_Algorithm::generateKey(int prime1, int prime2) {
     //public key (e,N)
     integer e = 2;
     while (e < Qn) {  //for checking that e between -> 1 < e < Q(n) and greatestCommonDivisor(e, Q(n)) = 1.
-        if (greatestCommonDivisor(e, Qn) == 1 && e > 500) {  // e should be a big number in order to get a powerful encryption.
+        if (greatestCommonDivisor(e, Qn) == 1 && e > 100) {  // e should be a big number in order to get a powerful encryption.
             break;
         }
         else {
             e++;
         }
     }
+    std::cout << "e: " << e << std::endl;
     publicKey = std::make_pair(e, N);
     //  std::cout << "public key (e,N) : " << publicKey.first << "," << publicKey.second << std::endl;
 
@@ -35,6 +36,7 @@ void RSA_Algorithm::generateKey(int prime1, int prime2) {
         }
     }
     privateKey = std::make_pair(d, N);
+    std::cout << "d: " << d << std::endl;
     //  std::cout << "private key (e,N) : " << privateKey.first << "," << privateKey.second << std::endl;
 }
 integer RSA_Algorithm::encryption(integer data) {
