@@ -103,15 +103,15 @@ public:
         std::vector<long> dec3;
         std::vector<long> dec4;
 
-        std::thread thrd1([&] {decryptionThread(dec1, 0, textLines.size()); });
-     //   std::thread thrd2([&] {decryptionThread(dec2, textLines.size() / 4, textLines.size() / 2); });
-     //   std::thread thrd3([&] {decryptionThread(dec3, textLines.size() / 2, (textLines.size() * 3) / 4); });
-     //   std::thread thrd4([&] {decryptionThread(dec4, (textLines.size() * 3) / 4, textLines.size()); });
+        std::thread thrd1([&] {decryptionThread(dec1, 0, textLines.size() / 4); });
+        std::thread thrd2([&] {decryptionThread(dec2, textLines.size() / 4, textLines.size() / 2); });
+        std::thread thrd3([&] {decryptionThread(dec3, textLines.size() / 2, (textLines.size() * 3) / 4); });
+        std::thread thrd4([&] {decryptionThread(dec4, (textLines.size() * 3) / 4, textLines.size()); });
 
         thrd1.join();
-       // thrd2.join();
-       // thrd3.join();
-       // thrd4.join();
+        thrd2.join();
+        thrd3.join();
+        thrd4.join();
 
         for (int i = 0; i < dec1.size(); i++) {
             decryptedDATA.push_back(dec1[i]);
