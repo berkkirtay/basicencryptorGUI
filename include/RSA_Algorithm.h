@@ -10,13 +10,12 @@ namespace RSA_ {
 	private:
 		std::pair<integer, integer> publicKey;
 		std::pair<integer, integer> privateKey;
+		integer basicXOR(integer data, int opt);
+		integer greatestCommonDivisor(integer x, integer y);
 	public:
 		RSA_Algorithm();
 		integer encryption(integer data);
 		integer decryption(integer data);
-		integer basicHashing(integer data, int opt);
 		void generateKey(int prime1, int prime2);
-		integer greatestCommonDivisor(integer x, integer y);
 	};
-
 }

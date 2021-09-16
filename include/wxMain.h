@@ -1,27 +1,26 @@
 #pragma once
 #include "wx/wx.h"
-#include "BasicEncryptor.h"
 #include <wx/progdlg.h>
+#include "FileHandler.h"
 
+class wxMain : public wxFrame {
+private:
+	const int ENCRYPTION = 0;
+	const int DECRYPTION = -1;
 
-class wxMain : public wxFrame{
 private:
 	std::string fileLocation;
 	wxString path;
 	std::string fileName;
-	int option = 0;
 	int operations = 0;
-	int encryptionType = 0;  // 0 for RSA_Algorithm - 1 for BASICXOR_Algorithm
-	wxArrayString* choices = nullptr;
-public:
-	wxMain();
-	~wxMain();
-public:
+	int option = 0;
+
+private:
 	wxButton* btn1 = nullptr;
 	wxButton* btn2 = nullptr;
 	wxTextCtrl* txt1 = nullptr;
 	wxTextCtrl* txt2 = nullptr;
-	wxStaticText* tx1=nullptr;
+	wxStaticText* tx1 = nullptr;
 	wxStaticText* tx2 = nullptr;
 	wxStaticText* tx3 = nullptr;
 	wxStaticText* tx4 = nullptr;
@@ -29,15 +28,14 @@ public:
 	wxListBox* listbox = nullptr;
 	void onButtonClicked(wxCommandEvent& event);
 	void onSecButtonClicked(wxCommandEvent& event);
-	void onListBox(wxCommandEvent& event);
 	void onClose(wxCloseEvent& event);
 	void setfileLocation(std::string fileLocation);
-	static void progressBar(int progress);
-	bool fileType();
-	int getOpt();
-	int getencryptionType();
+	int getFileType();
+	void startEncryption(int prime1, int prime2);
 	wxDECLARE_EVENT_TABLE();
-	
 
+public:
+	wxMain();
+	~wxMain();
 };
 

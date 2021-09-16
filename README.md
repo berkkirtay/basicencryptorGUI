@@ -1,23 +1,18 @@
-## Basic encryptor-decryptor implementation with wxwidgets GUI Built by trantor00
+## Basic encryptor-decryptor implementation with wxwidgets GUI.
 
-RSA_Algorithm class handles encryption and encrypted files consist only numbers now.
-The program handles every character separately and applies RSA after creating a basic hash function for every character.
+- I refactored the old code I wrote in this project. I changed the way generating input for RSA algorithm. Now it takes 3 or 2 letters and put them in the same chunk of data. It is more secure but since it requires a huge computing power, it is advisable to use a block cipher algorithm when we handle big files. We can implement any of those algorithms but I developed this program for fun and we shouldn't expect a professional result. We should always use ready and tested cryptography libraries if we are serious about our encryption.
 
-This program can encrypt all kinds of file types. For additional security you can change the prime generator algorithm to get much bigger prime numbers and try to use a block cipher algorithm.
-
-BASICXOR_Algorithm class has a very weak algorithm and it shouldn't be used for encrption purposes. I only added it as an addition to the program. But I may remove it from the project in the future.
+- We can encrypt all kinds of file types. It reads all the bytes in the file and saves the encrypted data in hex. If we increase the chunk size then we should also choose bigger primes.
 
 ## How to: 
-Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and also included a cmake file so you can build it on linux easily.
+Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and I also included a cmake file for linux.
 
-You should choose a file and an encrytion type! Then you can encrypt or decrypt it with your key.
-
-## Choosing the encryption type
+## Choosing the file to encrypt:
 ![Enc1](https://i.imgur.com/4O6wplR.png)
 
-## Generated prime numbers
+## Generated prime numbers:
 ![Enc2](https://i.imgur.com/oR8QUKg.png)
 
-## Processed file
+## Processed file:
 ![Enc3](https://i.imgur.com/cBjoSww.png)
 

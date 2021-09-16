@@ -5,8 +5,6 @@
 #include <wx/icon.h>
 //frame_icon ICON "images/icon-win.ico"
 
-
-
 class wxAppLaunch : public wxApp
 {
 private:
