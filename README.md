@@ -8,11 +8,11 @@
 Attention! You must have wxwidgets libs to compile source codes. I included a compiled executable file(windows) in the releases and I also included a cmake file for linux.
 
 ## Choosing the file to encrypt:
-![Enc1](https://i.imgur.com/4O6wplR.png)
+![Enc1](https://raw.githubusercontent.com/berkkirtay/basicencryptorGUI/master/example%20text%20encryption/Capture1.PNG)
 
 ## Generated prime numbers:
-![Enc2](https://i.imgur.com/oR8QUKg.png)
+![Enc2](https://raw.githubusercontent.com/berkkirtay/basicencryptorGUI/master/example%20text%20encryption/Capture2.PNG)
 
 ## Processed file:
-![Enc3](https://i.imgur.com/cBjoSww.png)
+![Enc3](https://github.com/berkkirtay/basicencryptorGUI/blob/master/example%20text%20encryption/Capture3.PNG)
 
